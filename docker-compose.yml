@@ -31,3 +31,7 @@ services:
     image: rabbitmq:3
   mongo-db-instance:
     image: mongo:5.0.15
+    volumes:
+      - mongo-db-volume:/data/db
+volumes:
+  mongo-db-volume:
