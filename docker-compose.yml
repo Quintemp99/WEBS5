@@ -15,5 +15,17 @@ services:
     environment:
       - PORT=${AUTH_SERVICE_PORT}
       - MONGO_URL=${AUTH_SERVICE_MONGO_URL}
+  profile-service:
+    container_name: profile-service
+    build: ./profile-service
+    environment:
+      - PORT=${PROFILE_SERVICE_PORT}
+      - MONGO_URL=${PROFILE_SERVICE_MONGO_URL}
+  target-service:
+    container_name: target-service
+    build: ./target-service
+    environment:
+      - PORT=${TARGET_SERVICE_PORT}
+      - MONGO_URL=${TARGET_SERVICE_MONGO_URL}
   mongo-db-instance:
     image: mongo:5.0.15
