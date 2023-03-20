@@ -27,5 +27,7 @@ services:
     environment:
       - PORT=${TARGET_SERVICE_PORT}
       - MONGO_URL=${TARGET_SERVICE_MONGO_URL}
+  rabbitmq-instance:
+    image: rabbitmq:3
   mongo-db-instance:
     image: mongo:5.0.15
