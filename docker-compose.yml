@@ -1,0 +1,19 @@
+# docker-compose.yml
+version: "3.9"
+
+services:
+  api-gateway:
+    container_name: api-gateway
+    build: ./api-gateway
+    environment:
+      - PORT=${API_GATEWAY_PORT}
+    ports:
+      - 8080:${API_GATEWAY_PORT}
+  auth-service:
+    container_name: auth-service
+    build: ./auth-service
+    environment:
+      - PORT=${AUTH_SERVICE_PORT}
+      - MONGO_URL=${AUTH_SERVICE_MONGO_URL}
+  mongo-db-instance:
+    image: mongo:5.0.15
