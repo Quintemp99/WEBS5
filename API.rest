@@ -1,0 +1,21 @@
+### Register call
+POST http://localhost:12345/register
+content-type: application/json
+
+{
+    "email": "q.tempelaars@gmail.com",
+    "password": "password"
+}
+
+### Login call
+POST http://localhost:12345/login
+content-type: application/json
+
+{
+    "email": "q.tempelaars@gmail.com",
+    "password": "password"
+}
+
+### authenticated call
+GET http://localhost:12345/test?secret_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MjE1NzdkYmE0Mzk1YjQxNTYyN2VlMyIsImVtYWlsIjoicS50ZW1wZWxhYXJzQGdtYWlsLmNvbSJ9LCJpYXQiOjE2Nzk5MDcwODl9.GjkfzHUezMuR5qkOBmWlnWR9p07lJY9s2VoYMIPgbIo
+content-type: application/json

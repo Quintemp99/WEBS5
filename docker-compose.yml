@@ -12,9 +12,12 @@ services:
   auth-service:
     container_name: auth-service
     build: ./auth-service
+    ports:
+      - 12345:${AUTH_SERVICE_PORT}
     environment:
       - PORT=${AUTH_SERVICE_PORT}
       - MONGO_URL=${AUTH_SERVICE_MONGO_URL}
+      - JWT_SECRET=${JWT_SECRET}
   profile-service:
     container_name: profile-service
     build: ./profile-service
