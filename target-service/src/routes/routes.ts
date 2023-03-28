@@ -23,4 +23,8 @@ export default ({ app }: TRoutesInput) => {
   app.get("/getTargetImage/:id", async (req: any, res: any) => {
     TargetController.getTargetImage(req, res);
   });
+
+  app.get("/findTargetParticipantByUser/:id", async (req: any, res: any) => {
+    TargetController.findTargetParticipantByUser(req, res);
+  });
 };

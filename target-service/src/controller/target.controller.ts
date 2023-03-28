@@ -73,8 +73,21 @@ async function getTargetImage(req: any, res: any): Promise<void> {
   }
 }
 
+async function findTargetParticipantByUser(req: any, res: any): Promise<void> {
+  const target = await Target.findById(req.params.id);
+  const participant = target?.participant.find(
+    (p: any) => p.user.id === req.query.userId
+  );
+  if (participant) {
+    res.send(participant);
+  } else {
+    res.status(404).send("Participant not found");
+  }
+}
+
 export default {
   createTarget,
   getAllTargets,
   getTargetImage,
+  findTargetParticipantByUser,
 };
