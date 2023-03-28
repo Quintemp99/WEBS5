@@ -21,6 +21,10 @@ async function createTarget(req: any, data: any): Promise<any> {
 }
 
 async function getAllTargets(req: any, res: any): Promise<void> {
+  const page = req.query.page ? parseInt(req.query.page, 10) : 1;
+  const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
+  const startIndex = (page - 1) * limit;
+
   try {
     const targets = await Target.find({}, [
       "_id",
@@ -29,10 +33,27 @@ async function getAllTargets(req: any, res: any): Promise<void> {
       "participant.score",
       "participant.user",
       "bestParticipant",
-    ]);
-    res.send(targets);
+    ])
+      .skip(startIndex)
+      .limit(limit)
+      .exec();
+
+    const totalCount = await Target.countDocuments();
+
+    const pagination = {
+      currentPage: page,
+      totalPages: Math.ceil(totalCount / limit),
+      totalPageItems: targets.length,
+      totalItems: totalCount,
+    };
+
+    res.send({
+      pagination,
+      data: targets,
+    });
   } catch (error) {
-    res.status(500).send({ error: error });
+    console.error(error);
+    res.status(500).send("Server error occurred while fetching targets");
   }
 }
 
