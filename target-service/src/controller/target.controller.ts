@@ -5,33 +5,40 @@ import Target, { ITarget } from "../models/target.model";
 
 dotenv.config();
 
-async function UploadTarget(req: any, res: any) {
-  UploadImage(req, res).then((data) => {
-    res.send(CreateTarget(req, data));
-  });
-}
-
-async function UploadParticipant(req: any, res: any) {
-  await UploadImage(req, res).then((data) => {
-    res.send(CreateParticipant(req, data));
-  });
-}
-
-async function UploadImage(req: any, res: any) {
-  let formData = new FormData();
-  if (!req.files.image) {
-    res.writeHead(300, { "Content-type": "text/javascript" });
-    res.end(JSON.stringify({ status: "failed", error: "no image specified" }));
-    return;
+async function uploadTarget(req: any, res: any): Promise<void> {
+  try {
+    const data = await uploadImage(req);
+    const target = await createTarget(req, data);
+    res.send(target);
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong" });
   }
-  formData.append("image", req.files.image.data, "uploaded_image.jpg");
-  return await ImmagaApi.UploadImage(formData).then((data: any) => {
-    return data;
-  });
 }
 
-function CreateTarget(req: any, data: any): any {
-  const target = new Target({
+async function uploadParticipant(req: any, res: any): Promise<void> {
+  try {
+    const data = await uploadImage(req);
+    const participant = await createParticipant(req, data);
+    res.send(participant);
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong" });
+  }
+}
+
+async function uploadImage(req: any): Promise<any> {
+  if (!req.files?.image) {
+    throw new Error("No image specified");
+  }
+
+  const formData = new FormData();
+  formData.append("image", req.files.image.data, "uploaded_image.jpg");
+
+  const data = await ImmagaApi.uploadImage(formData);
+  return data;
+}
+
+async function createTarget(req: any, data: any): Promise<any> {
+  const target = {
     image: {
       data: req.files.image.data,
       immagaId: data.result.upload_id,
@@ -40,13 +47,12 @@ function CreateTarget(req: any, data: any): any {
       long: 0,
       lat: 0,
     },
-  });
-  target.save().then((data: any) => {
-    return data;
-  });
+  };
+  const savedTarget = await Target.create(target);
+  return savedTarget;
 }
 
-async function CreateParticipant(req: any, data: any): Promise<any> {
+async function createParticipant(req: any, data: any): Promise<any> {
   const target = await Target.findById(req.params.id);
 
   const user = {
@@ -59,42 +65,32 @@ async function CreateParticipant(req: any, data: any): Promise<any> {
     immagaId: data.result.upload_id,
   };
 
+  const score = await compareTargetParticipant(
+    target!.image.immagaId,
+    data.result.upload_id
+  );
+
   const participant = {
-    user: user,
-    image: image,
-    score: await CompareTargetParticipant(
-      target!.image.immagaId,
-      data.result.upload_id
-    ).then((data) => {
-      return data;
-    }),
+    user,
+    image,
+    score,
   };
 
-  Target.findByIdAndUpdate(
+  const updatedTarget = await Target.findByIdAndUpdate(
     req.params.id,
-    { $push: { participant: participant } },
+    { $push: { participant } },
     { new: true }
-  ).then((data) => {
-    return data;
-  });
+  );
+  return updatedTarget;
 }
 
-async function CompareTargetParticipant(target: any, participant: any) {
-  if (target && participant) {
-    return ImmagaApi.CompareImages(target, participant).then((data: any) => {
-      return data.result.distance;
-    });
+async function compareTargetParticipant(target: any, participant: any) {
+  if (!target || !participant) {
+    throw new Error("Target or participant not specified");
   }
+
+  const data = await ImmagaApi.compareImages(target, participant);
+  return data.result.distance;
 }
 
-function CompareImages(req: any, res: any) {
-  const ImageTarget = req.query.ImageTarget;
-  const ImageParticipant = req.query.ImageParticipant;
-  if (!ImageTarget || !ImageParticipant) {
-  }
-  ImmagaApi.CompareImages(ImageTarget, ImageParticipant).then((data: any) => {
-    res.send(data);
-  });
-}
-
-export default { UploadTarget, UploadParticipant, CompareImages };
+export default { uploadTarget, uploadParticipant };
