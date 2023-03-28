@@ -1,22 +1,26 @@
 import { TRoutesInput } from "../types/routes";
-import ImmagaApi from "../services/ImmagaApi.service";
+import ImageController from "../controller/image.controller";
 import TargetController from "../controller/target.controller";
-import Target, { ITarget } from "../models/target.model";
+import ParticipantController from "../controller/participant.controller";
 
 export default ({ app }: TRoutesInput) => {
   app.post("/createTarget", async (req: any, res: any) => {
-    TargetController.uploadTarget(req, res);
+    ImageController.uploadTarget(req, res);
   });
 
   app.post("/createParticipant/:id", async (req: any, res: any) => {
-    TargetController.uploadParticipant(req, res);
-  });
-
-  app.get("/bestParticipant/:id", async (req: any, res: any) => {
-    TargetController.getBestParticipant(req, res);
+    ImageController.uploadParticipant(req, res);
   });
 
   app.get("/getParticipantImage/:id/:userId", async (req: any, res: any) => {
-    TargetController.getParticipantImage(req, res);
+    ParticipantController.getParticipantImage(req, res);
+  });
+
+  app.get("/getAllTargets", async (req: any, res: any) => {
+    TargetController.getAllTargets(req, res);
+  });
+
+  app.get("/getTargetImage/:id", async (req: any, res: any) => {
+    TargetController.getTargetImage(req, res);
   });
 };
