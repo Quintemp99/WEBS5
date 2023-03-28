@@ -21,7 +21,7 @@ async function uploadParticipant(req: any, res: any): Promise<void> {
     const participant = await createParticipant(req, data);
     res.send(participant);
   } catch (error) {
-    res.status(500).send({ error: "Something went wrong" });
+    res.status(500).send({ error: error });
   }
 }
 
@@ -93,4 +93,42 @@ async function compareTargetParticipant(target: any, participant: any) {
   return data.result.distance;
 }
 
-export default { uploadTarget, uploadParticipant };
+async function getBestParticipant(req: any, res: any): Promise<void> {
+  try {
+    const target = await Target.findById(req.params.id);
+    const bestParticipant = target?.participant.reduce((prev, current) =>
+      prev.score < current.score ? prev : current
+    );
+    const returnParticipant = {
+      user: bestParticipant?.user,
+      score: bestParticipant?.score,
+    };
+    res.send(returnParticipant);
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+}
+
+async function getParticipantImage(req: any, res: any): Promise<void> {
+  try {
+    const target = await Target.findById(req.params.id);
+    const participant = target?.participant.find(
+      (p) => p.user.id === req.params.userId
+    );
+    if (participant?.image && participant?.image.data) {
+      res.set("Content-Type", "image/jpeg");
+      res.send(Buffer.from(participant.image.data));
+    } else {
+      res.status(404).send("Image not found");
+    }
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+}
+
+export default {
+  uploadTarget,
+  uploadParticipant,
+  getBestParticipant,
+  getParticipantImage,
+};

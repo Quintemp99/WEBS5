@@ -11,4 +11,12 @@ export default ({ app }: TRoutesInput) => {
   app.post("/createParticipant/:id", async (req: any, res: any) => {
     TargetController.uploadParticipant(req, res);
   });
+
+  app.get("/bestParticipant/:id", async (req: any, res: any) => {
+    TargetController.getBestParticipant(req, res);
+  });
+
+  app.get("/getParticipantImage/:id/:userId", async (req: any, res: any) => {
+    TargetController.getParticipantImage(req, res);
+  });
 };
