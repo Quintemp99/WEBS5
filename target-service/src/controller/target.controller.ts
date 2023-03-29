@@ -5,6 +5,17 @@ import Target, { ITarget } from "../models/target.model";
 
 dotenv.config();
 
+const TARGET_COLUMNS = [
+  "_id",
+  "location",
+  "image.immagaId",
+  "participant._id",
+  "participant.score",
+  "participant.user",
+  "participant.image.immagaId",
+  "bestParticipant",
+];
+
 async function createTarget(req: any, data: any): Promise<any> {
   const target = {
     image: {
@@ -26,14 +37,7 @@ async function getAllTargets(req: any, res: any): Promise<void> {
   const startIndex = (page - 1) * limit;
 
   try {
-    const targets = await Target.find({}, [
-      "_id",
-      "location",
-      "participant._id",
-      "participant.score",
-      "participant.user",
-      "bestParticipant",
-    ])
+    const targets = await Target.find({}, TARGET_COLUMNS)
       .skip(startIndex)
       .limit(limit)
       .exec();
@@ -73,15 +77,38 @@ async function getTargetImage(req: any, res: any): Promise<void> {
   }
 }
 
-async function findTargetParticipantByUser(req: any, res: any): Promise<void> {
-  const target = await Target.findById(req.params.id);
-  const participant = target?.participant.find(
-    (p: any) => p.user.id === req.query.userId
-  );
-  if (participant) {
-    res.send(participant);
-  } else {
-    res.status(404).send("Participant not found");
+export async function getTarget(req: any, res: any): Promise<void> {
+  try {
+    if (req.query.userId) {
+      const target = await Target.findById(req.params.id);
+      const participant = target?.participant.find(
+        (p) => p.user.id === req.query.userId
+      );
+      if (target && participant) {
+        target.participant = [participant];
+        res.send(target);
+      } else {
+        res.status(404).send("Target and participant not found");
+      }
+    } else if (req.query.long && req.query.lat) {
+      const target = await Target.find(
+        {
+          "location.long": req.query.long,
+          "location.lat": req.query.lat,
+        },
+        TARGET_COLUMNS
+      );
+      if (target.length > 0) {
+        res.send(target);
+      } else {
+        res.status(404).send("Target not found");
+      }
+    } else {
+      res.status(400).send("Invalid query parameters");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
   }
 }
 
@@ -89,5 +116,5 @@ export default {
   createTarget,
   getAllTargets,
   getTargetImage,
-  findTargetParticipantByUser,
+  getTarget,
 };

@@ -8,6 +8,10 @@ export default ({ app }: TRoutesInput) => {
     ImageController.uploadTarget(req, res);
   });
 
+  app.get("/getAllTargets", async (req: any, res: any) => {
+    TargetController.getAllTargets(req, res);
+  });
+
   app.post("/createParticipant/:id", async (req: any, res: any) => {
     ImageController.uploadParticipant(req, res);
   });
@@ -16,15 +20,11 @@ export default ({ app }: TRoutesInput) => {
     ParticipantController.getParticipantImage(req, res);
   });
 
-  app.get("/getAllTargets", async (req: any, res: any) => {
-    TargetController.getAllTargets(req, res);
-  });
-
   app.get("/getTargetImage/:id", async (req: any, res: any) => {
     TargetController.getTargetImage(req, res);
   });
 
-  app.get("/findTargetParticipantByUser/:id", async (req: any, res: any) => {
-    TargetController.findTargetParticipantByUser(req, res);
+  app.get("/getTarget/:id?", async (req: any, res: any) => {
+    TargetController.getTarget(req, res);
   });
 };
