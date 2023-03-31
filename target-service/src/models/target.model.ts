@@ -44,6 +44,10 @@ const targetSchema = new Schema<ITarget>(
   opts
 );
 
+targetSchema.virtual("coordinates").get(function () {
+  return `${this.location.long}, ${this.location.lat}`;
+});
+
 targetSchema.virtual("bestParticipant").get(function () {
   let bestScore = Infinity;
   let bestParticipant = null;

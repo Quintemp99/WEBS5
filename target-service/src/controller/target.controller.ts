@@ -77,7 +77,7 @@ async function getTargetImage(req: any, res: any): Promise<void> {
   }
 }
 
-export async function getTarget(req: any, res: any): Promise<void> {
+async function getTarget(req: any, res: any): Promise<void> {
   try {
     if (req.query.userId) {
       const target = await Target.findById(req.params.id);
@@ -112,9 +112,45 @@ export async function getTarget(req: any, res: any): Promise<void> {
   }
 }
 
+async function deleteTarget(req: any, res: any): Promise<void> {
+  try {
+    const target = await Target.findById(req.params.id);
+    if (target) {
+      await Target.findByIdAndDelete(req.params.id);
+      res.send("Target deleted");
+    } else {
+      res.status(404).send("Target not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+}
+
+async function deleteParticipantFromTarget(req: any, res: any): Promise<void> {
+  Target.updateOne(
+    { _id: req.params.id },
+    {
+      $pull: {
+        participant: { _id: req.params.participantId },
+      },
+    }
+  )
+    .then((result) => {
+      console.log(result);
+      res.send("Participant deleted");
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Internal server error");
+    });
+}
+
 export default {
   createTarget,
   getAllTargets,
   getTargetImage,
   getTarget,
+  deleteTarget,
+  deleteParticipantFromTarget,
 };
