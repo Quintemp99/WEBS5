@@ -18,6 +18,7 @@ const userSchema = new Schema<IUser>({
 });
 
 export interface IParticipant {
+  _id?: string;
   user: IUser;
   image: IImage;
   score: number;

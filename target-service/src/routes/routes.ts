@@ -4,27 +4,35 @@ import TargetController from "../controller/target.controller";
 import ParticipantController from "../controller/participant.controller";
 
 export default ({ app }: TRoutesInput) => {
-  app.post("/createTarget", async (req: any, res: any) => {
+  app.post("/target", (req, res) => {
     ImageController.uploadTarget(req, res);
   });
 
-  app.post("/createParticipant/:id", async (req: any, res: any) => {
-    ImageController.uploadParticipant(req, res);
-  });
-
-  app.get("/getParticipantImage/:id/:userId", async (req: any, res: any) => {
-    ParticipantController.getParticipantImage(req, res);
-  });
-
-  app.get("/getAllTargets", async (req: any, res: any) => {
+  app.get("/target", (req, res) => {
     TargetController.getAllTargets(req, res);
   });
 
-  app.get("/getTargetImage/:id", async (req: any, res: any) => {
+  app.post("/participant/:id", (req, res) => {
+    ImageController.uploadParticipant(req, res);
+  });
+
+  app.get("/participant/:id/:userId/image", (req, res) => {
+    ParticipantController.getParticipantImage(req, res);
+  });
+
+  app.get("/target/:id/image", (req, res) => {
     TargetController.getTargetImage(req, res);
   });
 
-  app.get("/findTargetParticipantByUser/:id", async (req: any, res: any) => {
-    TargetController.findTargetParticipantByUser(req, res);
+  app.get("/target/:id?", (req, res) => {
+    TargetController.getTarget(req, res);
+  });
+
+  app.delete("/target/:id", (req, res) => {
+    TargetController.deleteTarget(req, res);
+  });
+
+  app.delete("/target/:id/:participantId", (req, res) => {
+    TargetController.deleteParticipantFromTarget(req, res);
   });
 };
