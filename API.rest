@@ -1,3 +1,4 @@
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmFkYzcyMmU1MjRhZDFkZGM5NzIxMyIsImVtYWlsIjoicS50ZW1wZWxhYXJzQGdtYWlsLmNvbSJ9LCJpYXQiOjE2ODA1Mzc4NDQsImV4cCI6MTY4MDU0MTQ0NH0.S-MFU4F41xAE0KiyJJ_WrREEgyVN87wIZzPBzgofo64
 ### Register call
 POST http://localhost:8080/auth/register
 content-type: application/json
@@ -15,3 +16,13 @@ content-type: application/json
     "email": "q.tempelaars@gmail.com",
     "password": "password"
 }
+
+### Validate
+GET http://localhost:8080/validate
+content-type: application/json
+Authorization: Bearer {{TOKEN}}
+
+### Validate
+GET http://localhost:8080/profile/
+content-type: application/json
+Authorization: Bearer {{TOKEN}}

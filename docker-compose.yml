@@ -8,6 +8,9 @@ services:
     environment:
       - PORT=${API_GATEWAY_PORT}
       - AUTHSERVICE_URL=${AUTHSERVICE_URL}
+      - PROFILESERVICE_URL=${PROFILESERVICE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - API_SECRET=${API_SECRET}
     ports:
       - 8080:${API_GATEWAY_PORT}
   auth-service:

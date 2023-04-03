@@ -26,7 +26,7 @@ export default ({ app }: TRoutesInput) => {
                     const body = { _id: user._id, email: user.email };
                     const token = jwt.sign({ user: body }, 
                       process.env.JWT_SECRET || "", 
-                      { expiresIn: "1m"});
+                      { expiresIn: "1h"});
       
                     return res.json({ token });
                   }

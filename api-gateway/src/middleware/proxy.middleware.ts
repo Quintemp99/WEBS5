@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { createProxyMiddleware } from "http-proxy-middleware";
 
 const authProxyMiddleware = createProxyMiddleware({
@@ -8,6 +9,21 @@ const authProxyMiddleware = createProxyMiddleware({
     },
   });
 
+  const profileProxyMiddleware = createProxyMiddleware({
+    target: process.env.PROFILESERVICE_URL || "",
+    changeOrigin: true,
+    onProxyReq: function onProxyReq(proxyReq, req, res){
+      const token = jwt.sign({ user: req.user }, 
+        process.env.API_SECRET || "", 
+        { expiresIn: "1h"});
+      proxyReq.setHeader('Authorization', `Bearer ${token}`)
+    },
+    pathRewrite: {
+      "^/profile": "",
+    },
+  });
+
   export default {
-    authProxyMiddleware
+    authProxyMiddleware,
+    profileProxyMiddleware
   }
