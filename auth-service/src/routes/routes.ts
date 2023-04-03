@@ -6,10 +6,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default ({ app }: TRoutesInput) => {
-    app.get('/test', passport.authenticate('jwt', {session:false}),(req,res,next)=>{
-        res.send("Secured route")
-    })
-    
     app.post('/login', (req,res, next) =>{
         passport.authenticate(
             'login',
@@ -28,7 +24,9 @@ export default ({ app }: TRoutesInput) => {
                     if (error) return next(error);
       
                     const body = { _id: user._id, email: user.email };
-                    const token = jwt.sign({ user: body }, process.env.JWT_SECRET || "");
+                    const token = jwt.sign({ user: body }, 
+                      process.env.JWT_SECRET || "", 
+                      { expiresIn: "1m"});
       
                     return res.json({ token });
                   }

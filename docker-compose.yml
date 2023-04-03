@@ -7,13 +7,12 @@ services:
     build: ./api-gateway
     environment:
       - PORT=${API_GATEWAY_PORT}
+      - AUTHSERVICE_URL=${AUTHSERVICE_URL}
     ports:
       - 8080:${API_GATEWAY_PORT}
   auth-service:
     container_name: auth-service
     build: ./auth-service
-    ports:
-      - 12345:${AUTH_SERVICE_PORT}
     environment:
       - PORT=${AUTH_SERVICE_PORT}
       - MONGO_URL=${AUTH_SERVICE_MONGO_URL}
