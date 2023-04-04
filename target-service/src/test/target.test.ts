@@ -13,7 +13,7 @@ describe("Target API", function () {
   it("should get all targets", (done) => {
     chai
       .request(app)
-      .get("/getAllTargets")
+      .get("/target")
       .end(function (err, res) {
         res.should.have.status(200);
         res.should.be.json;
@@ -24,9 +24,7 @@ describe("Target API", function () {
   it("should find a target participant by user", (done) => {
     chai
       .request(app)
-      .get(
-        "/findTargetParticipantByUser/64223effdcab2167b1d4905f?userId=696969123"
-      )
+      .get("/target/642c30e3179f34a3a04b026f?userId=123")
       .end(function (err, res) {
         res.should.have.status(200);
         res.should.be.json;
