@@ -17,6 +17,8 @@ app.use("/auth", proxyMiddleware.authProxyMiddleware)
 
 app.use("/profile", passportMiddleware, proxyMiddleware.profileProxyMiddleware)
 
+app.use("/target", passportMiddleware, proxyMiddleware.targetProxyMiddleware)
+
 app.get("/validate", passportMiddleware, (req,res)=>{
   res.status(200);
   res.end();

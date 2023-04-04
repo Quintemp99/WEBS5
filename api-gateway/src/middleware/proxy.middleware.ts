@@ -23,7 +23,22 @@ const authProxyMiddleware = createProxyMiddleware({
     },
   });
 
+  const targetProxyMiddleware = createProxyMiddleware({
+    target: process.env.TARGETSERVICE_URL || "",
+    changeOrigin: true,
+    onProxyReq: function onProxyReq(proxyReq, req, res){
+      const token = jwt.sign({ user: req.user }, 
+        process.env.API_SECRET || "", 
+        { expiresIn: "1h"});
+      proxyReq.setHeader('Authorization', `Bearer ${token}`)
+    },
+    pathRewrite: {
+      "^/target": "",
+    },
+  });
+
   export default {
     authProxyMiddleware,
-    profileProxyMiddleware
+    profileProxyMiddleware,
+    targetProxyMiddleware
   }

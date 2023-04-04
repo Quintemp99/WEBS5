@@ -1,7 +1,7 @@
 import chai, { expect } from "chai";
 import chatHttp from "chai-http";
-import Target, { ITarget } from "../src/models/target.model";
-import app from "../src/index";
+import Target, { ITarget } from "../models/target.model";
+import app from "../index";
 import chaiHttp from "chai-http";
 
 chai.use(chatHttp);

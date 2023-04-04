@@ -9,6 +9,7 @@ services:
       - PORT=${API_GATEWAY_PORT}
       - AUTHSERVICE_URL=${AUTHSERVICE_URL}
       - PROFILESERVICE_URL=${PROFILESERVICE_URL}
+      - TARGETSERVICE_URL=${TARGETSERVICE_URL}
       - JWT_SECRET=${JWT_SECRET}
       - API_SECRET=${API_SECRET}
     ports:
@@ -33,6 +34,7 @@ services:
     environment:
       - PORT=${TARGET_SERVICE_PORT}
       - MONGO_URL=${TARGET_SERVICE_MONGO_URL}
+      - API_SECRET=${API_SECRET}
   rabbitmq-instance:
     image: rabbitmq:3
   mongo-db-instance:

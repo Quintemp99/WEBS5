@@ -6,9 +6,10 @@ import TargetValidation from "../validation/target.validation";
 import ParticipantValidation from "../validation/participant.validation";
 import { TTarget } from "../types/target.type";
 import { TParticipant } from "../types/participant.type";
+import { passportMiddleware } from "../middleware/auth.middleware";
 
 export default ({ app }: TRoutesInput) => {
-  app.post("/target", (req, res) => {
+  app.post("/", passportMiddleware, (req, res) => {
     try {
       const result = TargetValidation.validateTarget(req);
       ImageController.uploadTarget(<TTarget>result, res);
@@ -17,11 +18,11 @@ export default ({ app }: TRoutesInput) => {
     }
   });
 
-  app.get("/target", (req, res) => {
+  app.get("/", passportMiddleware, (req, res) => {
     TargetController.getAllTargets(req, res);
   });
 
-  app.post("/participant/:id", (req, res) => {
+  app.post("/participant/:id", passportMiddleware, (req, res) => {
     try {
       const result = ParticipantValidation.validateParticipant(req);
       ImageController.uploadParticipant(<TParticipant>result, res);
@@ -30,23 +31,23 @@ export default ({ app }: TRoutesInput) => {
     }
   });
 
-  app.get("/participant/:id/:userId/image", (req, res) => {
+  app.get("/participant/:id/:userId/image", passportMiddleware, (req, res) => {
     ParticipantController.getParticipantImage(req, res);
   });
 
-  app.get("/target/:id/image", (req, res) => {
+  app.get("/:id/image", passportMiddleware, (req, res) => {
     TargetController.getTargetImage(req, res);
   });
 
-  app.get("/target/:id?", (req, res) => {
+  app.get("/:id?", passportMiddleware, (req, res) => {
     TargetController.getTarget(req, res);
   });
 
-  app.delete("/target/:id", (req, res) => {
+  app.delete("/:id", passportMiddleware, (req, res) => {
     TargetController.deleteTarget(req, res);
   });
 
-  app.delete("/target/:id/:participantId", (req, res) => {
+  app.delete("/:id/:participantId", passportMiddleware, (req, res) => {
     TargetController.deleteParticipantFromTarget(req, res);
   });
 };

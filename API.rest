@@ -1,4 +1,4 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmFkYzcyMmU1MjRhZDFkZGM5NzIxMyIsImVtYWlsIjoicS50ZW1wZWxhYXJzQGdtYWlsLmNvbSJ9LCJpYXQiOjE2ODA2MTE2MTMsImV4cCI6MTY4MDYxNTIxM30.HVvGM18QQVMb8bIiRBeUhoACw7Zcz0liUU2shKZ_DSM
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmFkYzcyMmU1MjRhZDFkZGM5NzIxMyIsImVtYWlsIjoicS50ZW1wZWxhYXJzQGdtYWlsLmNvbSJ9LCJpYXQiOjE2ODA2MTkzMTgsImV4cCI6MTY4MDYyMjkxOH0.bgo92SjPG3-XdaPltYCtGWVGf8kH8Ow7Y_BgDnUaYrg
 ### Register call
 POST http://localhost:8080/auth/register
 content-type: application/json
@@ -24,5 +24,10 @@ Authorization: Bearer {{TOKEN}}
 
 ### Profile
 GET http://localhost:8080/profile/
+content-type: application/json
+Authorization: Bearer {{TOKEN}}
+
+### Target get
+GET http://localhost:8080/target/
 content-type: application/json
 Authorization: Bearer {{TOKEN}}
