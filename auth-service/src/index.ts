@@ -19,4 +19,5 @@ app.listen(port, () =>
 const db = process.env.MONGO_URL || "";
 
 connect({ db });
+require('./initialize/auth')
 routes({ app });

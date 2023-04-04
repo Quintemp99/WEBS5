@@ -7,6 +7,10 @@ services:
     build: ./api-gateway
     environment:
       - PORT=${API_GATEWAY_PORT}
+      - AUTHSERVICE_URL=${AUTHSERVICE_URL}
+      - PROFILESERVICE_URL=${PROFILESERVICE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - API_SECRET=${API_SECRET}
     ports:
       - 8080:${API_GATEWAY_PORT}
   auth-service:
@@ -15,12 +19,14 @@ services:
     environment:
       - PORT=${AUTH_SERVICE_PORT}
       - MONGO_URL=${AUTH_SERVICE_MONGO_URL}
+      - JWT_SECRET=${JWT_SECRET}
   profile-service:
     container_name: profile-service
     build: ./profile-service
     environment:
       - PORT=${PROFILE_SERVICE_PORT}
       - MONGO_URL=${PROFILE_SERVICE_MONGO_URL}
+      - API_SECRET=${API_SECRET}
   target-service:
     container_name: target-service
     build: ./target-service
