@@ -26,6 +26,7 @@ services:
     environment:
       - PORT=${PROFILE_SERVICE_PORT}
       - MONGO_URL=${PROFILE_SERVICE_MONGO_URL}
+      - API_SECRET=${API_SECRET}
   target-service:
     container_name: target-service
     build: ./target-service

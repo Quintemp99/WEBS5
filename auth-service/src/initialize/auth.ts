@@ -1,22 +1,21 @@
 import passport from 'passport';
 const localStrategy = require('passport-local').Strategy
 import userModel from '../models/user.model';
-const JWTstrategy = require('passport-jwt').Strategy;
-const ExtractJWT = require('passport-jwt').ExtractJwt;
+import passportJWT from "passport-jwt";
 
 import dotenv from "dotenv";
 
 dotenv.config();
 
 passport.use(
-    new JWTstrategy(
+    new passportJWT.Strategy(
       {
         secretOrKey: process.env.JWT_SECRET || "",
-        jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
+        jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
       },
-      async (token:any, done:any) => {
+      async (tokenPayload, done) => {
         try {
-          return done(null, token.user);
+          return done(null, tokenPayload.user);
         } catch (error) {
           done(error);
         }
