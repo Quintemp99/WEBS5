@@ -2,10 +2,7 @@ export type TParticipant = {
   targetId: string;
   image: {
     name: string;
-    data: {
-      type: string;
-      data: number[];
-    };
+    data: Buffer;
     size: number;
     encoding: string;
     tempFilePath: string;

@@ -18,7 +18,7 @@ app.use(fileUpload());
 app.listen(port, () =>
   console.log(`Target service started successfully on port ${port}.`)
 );
-const db = process.env.MONGO_URL || "mongodb://localhost:27017/target_service";
+const db = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/target_service";
 connect({ db });
 routes({ app });
 

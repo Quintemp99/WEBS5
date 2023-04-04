@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 500000;
+const MAX_FILE_SIZE = 1500000;
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -8,10 +8,10 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ];
 
-type ValidatePayload = z.infer<typeof targetSchema>;
+type ValidatePayload = z.infer<typeof participantSchema>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function validateTarget(req: any) {
+function validateParticipant(req: any) {
   const payload: ValidatePayload = {
     targetId: req.params.id,
     image: req.files.image,
@@ -19,14 +19,14 @@ function validateTarget(req: any) {
     lat: req.body.lat,
   };
 
-  const parseTargetSchema = (props: ValidatePayload) => {
-    return targetSchema.parse(props);
+  const parseParticipantSchema = (props: ValidatePayload) => {
+    return participantSchema.parse(props);
   };
 
-  return parseTargetSchema(payload);
+  return parseParticipantSchema(payload);
 }
 
-const targetSchema = z.object({
+const participantSchema = z.object({
   targetId: z.string({
     required_error: "target id is required",
     invalid_type_error: "target id must be a string",
@@ -55,5 +55,5 @@ const targetSchema = z.object({
 });
 
 export default {
-  validateTarget,
+  validateParticipant,
 };

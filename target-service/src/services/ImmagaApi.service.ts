@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import axios from "axios";
-import FormData from "form-data";
 
 dotenv.config();
 
@@ -13,15 +12,18 @@ const COMPARE_ENDPOINT = `${API_ENDPOINT}/images-similarity/categories/${CATEGOR
 export default class ImmagaApi {
   static async uploadImage(data: FormData): Promise<any> {
     try {
-      const response = await axios.post(UPLOAD_ENDPOINT, data, {
-        auth: {
-          username: process.env.IMMAGA_API_KEY!,
-          password: process.env.IMMAGA_API_SECRET!,
+      const response = await fetch(UPLOAD_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${btoa(
+            `${process.env.IMMAGA_API_KEY}:${process.env.IMMAGA_API_SECRET}`
+          )}`,
         },
-        headers: data.getHeaders(),
+        body: data,
       });
-      console.log(response.data);
-      return response.data;
+      const responseData = await response.json();
+      console.log(responseData);
+      return responseData;
     } catch (error) {
       console.log(error);
       return error;
@@ -33,18 +35,20 @@ export default class ImmagaApi {
     ImageContender: string
   ): Promise<any> {
     try {
-      const response = await axios.get(COMPARE_ENDPOINT, {
-        auth: {
-          username: process.env.IMMAGA_API_KEY!,
-          password: process.env.IMMAGA_API_SECRET!,
-        },
-        params: {
-          image_upload_id: ImageTarget,
-          image2_upload_id: ImageContender,
-        },
-      });
-      console.log(response.data);
-      return response.data;
+      const response = await fetch(
+        `${COMPARE_ENDPOINT}?image_upload_id=${ImageTarget}&image2_upload_id=${ImageContender}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Basic ${btoa(
+              `${process.env.IMMAGA_API_KEY}:${process.env.IMMAGA_API_SECRET}`
+            )}`,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      return data;
     } catch (error) {
       console.log(error);
       return error;

@@ -13,15 +13,11 @@ async function createParticipant(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const target = await Target.findById(result.targetId);
-
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const created_at = new Date(target!.created_at);
   const now = new Date();
   const diff = Math.abs(now.getTime() - created_at.getTime());
   const diffHours = Math.ceil(diff / (1000 * 60 * 60));
-  if (diffHours > 24) {
-    throw new Error("Target is older than 24 hours, and can no longer be used");
-  }
 
   const user = {
     id: "123",

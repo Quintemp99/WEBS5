@@ -1,12 +1,10 @@
 import dotenv from "dotenv";
-import FormData from "form-data";
 import ImmagaApi from "../services/ImmagaApi.service";
 import TargetController from "../controller/target.controller";
 import ParticipantController from "../controller/participant.controller";
 import { TTarget } from "../types/target.type";
 import { Response } from "express";
 import { TParticipant } from "../types/participant.type";
-
 dotenv.config();
 
 async function uploadTarget(result: TTarget, res: Response): Promise<void> {
@@ -46,7 +44,8 @@ async function uploadImage(result: TTarget | TParticipant): Promise<FormData> {
   }
 
   const formData = new FormData();
-  formData.append("image", result.image.data, "uploaded_image.jpg");
+  const image = new Blob([result.image.data]);
+  formData.append("image", image, "uploaded_image.jpg");
 
   const data = await ImmagaApi.uploadImage(formData);
   return data;
