@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema } from "mongoose";
 
 export interface IImage {
   data: Buffer;

@@ -2,10 +2,18 @@ import { TRoutesInput } from "../types/routes";
 import ImageController from "../controller/image.controller";
 import TargetController from "../controller/target.controller";
 import ParticipantController from "../controller/participant.controller";
+import TargetValidation from "../validation/target.validation";
+import { TTarget } from "../types/target.type";
+import { TParticipant } from "../types/participant.type";
 
 export default ({ app }: TRoutesInput) => {
   app.post("/target", (req, res) => {
-    ImageController.uploadTarget(req, res);
+    try {
+      const result = TargetValidation.validateTarget(req);
+      ImageController.uploadTarget(<TTarget>result, res);
+    } catch (error) {
+      return res.status(400).json({ message: error });
+    }
   });
 
   app.get("/target", (req, res) => {
@@ -13,7 +21,12 @@ export default ({ app }: TRoutesInput) => {
   });
 
   app.post("/participant/:id", (req, res) => {
-    ImageController.uploadParticipant(req, res);
+    try {
+      const result = TargetValidation.validateTarget(req);
+      ImageController.uploadParticipant(<TParticipant>result, res);
+    } catch (error) {
+      return res.status(400).json({ message: error });
+    }
   });
 
   app.get("/participant/:id/:userId/image", (req, res) => {

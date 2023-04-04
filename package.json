@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "lint": "eslint . --ext .ts,.vue",
+    "lint-and-fix": "eslint . --ext .ts,.vue --fix"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema } from "mongoose";
 import { IImage, imageSchema } from "./image.model";
 
 interface IUser {

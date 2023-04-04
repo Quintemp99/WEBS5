@@ -3,24 +3,30 @@ import FormData from "form-data";
 import ImmagaApi from "../services/ImmagaApi.service";
 import TargetController from "../controller/target.controller";
 import ParticipantController from "../controller/participant.controller";
+import { TTarget } from "../types/target.type";
+import { Response } from "express";
+import { TParticipant } from "../types/participant.type";
 
 dotenv.config();
 
-async function uploadTarget(req: any, res: any): Promise<void> {
+async function uploadTarget(result: TTarget, res: Response): Promise<void> {
   try {
-    const data = await uploadImage(req);
-    const target = await TargetController.createTarget(req, data);
+    const data = await uploadImage(result);
+    const target = await TargetController.createTarget(result, data);
     res.send(target);
   } catch (error) {
     res.status(500).send({ error: "Something went wrong" });
   }
 }
 
-async function uploadParticipant(req: any, res: any): Promise<void> {
+async function uploadParticipant(
+  result: TParticipant,
+  res: Response
+): Promise<void> {
   try {
-    const data = await uploadImage(req);
+    const data = await uploadImage(result);
     const participant = await ParticipantController.createParticipant(
-      req,
+      result,
       data
     );
     res.send(participant);
@@ -34,13 +40,13 @@ async function uploadParticipant(req: any, res: any): Promise<void> {
   }
 }
 
-async function uploadImage(req: any): Promise<any> {
-  if (!req.files?.image) {
+async function uploadImage(result: TTarget | TParticipant): Promise<FormData> {
+  if (!result.image) {
     throw new Error("No image specified");
   }
 
   const formData = new FormData();
-  formData.append("image", req.files.image.data, "uploaded_image.jpg");
+  formData.append("image", result.image.data, "uploaded_image.jpg");
 
   const data = await ImmagaApi.uploadImage(formData);
   return data;

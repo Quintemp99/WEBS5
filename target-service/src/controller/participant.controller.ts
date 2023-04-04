@@ -1,12 +1,20 @@
 import dotenv from "dotenv";
 import ImmagaApi from "../services/ImmagaApi.service";
-import Target, { ITarget } from "../models/target.model";
+import Target from "../models/target.model";
+import { TParticipant } from "../types/participant.type";
+import { Request, Response } from "express";
 
 dotenv.config();
 
-async function createParticipant(req: any, data: any): Promise<any> {
-  const target = await Target.findById(req.params.id);
+async function createParticipant(
+  result: TParticipant,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
+  const target = await Target.findById(result.targetId);
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const created_at = new Date(target!.created_at);
   const now = new Date();
   const diff = Math.abs(now.getTime() - created_at.getTime());
@@ -21,11 +29,12 @@ async function createParticipant(req: any, data: any): Promise<any> {
   };
 
   const image = {
-    data: req.files.image.data,
+    data: result.image.data,
     immagaId: data.result.upload_id,
   };
 
   const score = await compareTargetParticipant(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     target!.image.immagaId,
     data.result.upload_id
   );
@@ -37,13 +46,14 @@ async function createParticipant(req: any, data: any): Promise<any> {
   };
 
   const updatedTarget = await Target.findByIdAndUpdate(
-    req.params.id,
+    result.targetId,
     { $push: { participant } },
     { new: true }
   );
   return updatedTarget;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function compareTargetParticipant(target: any, participant: any) {
   if (!target || !participant) {
     throw new Error("Target or participant not specified");
@@ -53,7 +63,7 @@ async function compareTargetParticipant(target: any, participant: any) {
   return data.result.distance;
 }
 
-async function getParticipantImage(req: any, res: any): Promise<void> {
+async function getParticipantImage(req: Request, res: Response): Promise<void> {
   try {
     const target = await Target.findById(req.params.id);
     const participant = target?.participant.find(

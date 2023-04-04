@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import FormData from "form-data";
-import ImmagaApi from "../services/ImmagaApi.service";
 import Target, { ITarget } from "../models/target.model";
+import { TTarget } from "../types/target.type";
+import { Request, Response } from "express";
 
 dotenv.config();
 
@@ -16,21 +16,22 @@ const TARGET_COLUMNS = [
   "bestParticipant",
 ];
 
-async function createTarget(req: any, data: any): Promise<any> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function createTarget(result: TTarget, data: any): Promise<ITarget> {
   const target = {
     image: {
-      data: req.files.image.data,
+      data: result.image.data,
       immagaId: data.result.upload_id,
     },
     location: {
-      long: 0,
-      lat: 0,
+      long: result.long,
+      lat: result.lat,
     },
   };
-  const savedTarget = await Target.create(target);
-  return savedTarget;
+  return await Target.create(target);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getAllTargets(req: any, res: any): Promise<void> {
   const page = req.query.page ? parseInt(req.query.page, 10) : 1;
   const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
@@ -61,7 +62,7 @@ async function getAllTargets(req: any, res: any): Promise<void> {
   }
 }
 
-async function getTargetImage(req: any, res: any): Promise<void> {
+async function getTargetImage(req: Request, res: Response): Promise<void> {
   try {
     const target = await Target.findById(req.params.id);
     const image = target?.image.data;
@@ -77,7 +78,7 @@ async function getTargetImage(req: any, res: any): Promise<void> {
   }
 }
 
-async function getTarget(req: any, res: any): Promise<void> {
+async function getTarget(req: Request, res: Response): Promise<void> {
   try {
     if (req.query.userId) {
       const target = await Target.findById(req.params.id);
@@ -112,7 +113,7 @@ async function getTarget(req: any, res: any): Promise<void> {
   }
 }
 
-async function deleteTarget(req: any, res: any): Promise<void> {
+async function deleteTarget(req: Request, res: Response): Promise<void> {
   try {
     const target = await Target.findById(req.params.id);
     if (target) {
@@ -127,7 +128,10 @@ async function deleteTarget(req: any, res: any): Promise<void> {
   }
 }
 
-async function deleteParticipantFromTarget(req: any, res: any): Promise<void> {
+async function deleteParticipantFromTarget(
+  req: Request,
+  res: Response
+): Promise<void> {
   Target.updateOne(
     { _id: req.params.id },
     {

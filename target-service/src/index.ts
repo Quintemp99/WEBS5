@@ -1,4 +1,4 @@
-import express, { Request, Response, Application } from "express";
+import express, { Application } from "express";
 import fileUpload from "express-fileupload";
 import dotenv from "dotenv";
 import morgan from "morgan";
