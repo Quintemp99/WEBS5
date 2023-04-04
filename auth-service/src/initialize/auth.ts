@@ -2,6 +2,7 @@ import passport from 'passport';
 const localStrategy = require('passport-local').Strategy
 import userModel from '../models/user.model';
 import passportJWT from "passport-jwt";
+import { publishUser } from '../services/publisher.service';
 
 import dotenv from "dotenv";
 
@@ -33,7 +34,7 @@ passport.use(
       async (email:string, password:string, done:any) => {
         try {
           const user = await userModel.create({ email, password });
-  
+          await publishUser({_id: user._id.toString(), email: user.email});
           return done(null, user);
         } catch (error) {
           done(error);

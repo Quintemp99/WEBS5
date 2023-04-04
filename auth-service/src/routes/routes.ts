@@ -12,9 +12,7 @@ export default ({ app }: TRoutesInput) => {
             async (err:any, user:any, info:any) => {
               try {
                 if (err || !user) {
-                  const error = new Error('An error occurred.');
-      
-                  return next(error);
+                  return next(new Error('An error occurred.'));
                 }
       
                 req.login(

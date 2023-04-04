@@ -2,6 +2,14 @@
 version: "3.9"
 
 services:
+  rabbitmq-instance:
+    image: rabbitmq:3
+    healthcheck: # check if service bus is up and healthy. Note: The timings have been decreased from default in order to speed up startup time for dependant services
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   api-gateway:
     container_name: api-gateway
     build: ./api-gateway
@@ -14,6 +22,7 @@ services:
       - API_SECRET=${API_SECRET}
     ports:
       - 8080:${API_GATEWAY_PORT}
+
   auth-service:
     container_name: auth-service
     build: ./auth-service
@@ -21,6 +30,12 @@ services:
       - PORT=${AUTH_SERVICE_PORT}
       - MONGO_URL=${AUTH_SERVICE_MONGO_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - RABBIT_URL=${RABBIT_URL}
+      - RABBIT_EXCHANGE=${RABBIT_EXCHANGE}
+    depends_on:
+      rabbitmq-instance:
+        condition: service_healthy
+
   profile-service:
     container_name: profile-service
     build: ./profile-service
@@ -28,6 +43,12 @@ services:
       - PORT=${PROFILE_SERVICE_PORT}
       - MONGO_URL=${PROFILE_SERVICE_MONGO_URL}
       - API_SECRET=${API_SECRET}
+      - RABBIT_URL=${RABBIT_URL}
+      - RABBIT_EXCHANGE=${RABBIT_EXCHANGE}
+    depends_on:
+      rabbitmq-instance:
+        condition: service_healthy
+
   target-service:
     container_name: target-service
     build: ./target-service
@@ -35,11 +56,14 @@ services:
       - PORT=${TARGET_SERVICE_PORT}
       - MONGO_URL=${TARGET_SERVICE_MONGO_URL}
       - API_SECRET=${API_SECRET}
-  rabbitmq-instance:
-    image: rabbitmq:3
+    depends_on:
+      rabbitmq-instance:
+        condition: service_healthy
+
   mongo-db-instance:
     image: mongo:5.0.15
     volumes:
       - mongo-db-volume:/data/db
+
 volumes:
   mongo-db-volume:

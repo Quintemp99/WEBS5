@@ -2,7 +2,8 @@ import express, { Request, Response, Application } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import routes from "./routes/routes";
-import connect from "./connect";
+import connect from "./config/connect";
+import { enableConsumer } from "./services/consumer.service";
 
 dotenv.config();
 
@@ -20,3 +21,4 @@ const db = process.env.MONGO_URL || '';
 
 connect({ db });
 routes({ app });
+enableConsumer();

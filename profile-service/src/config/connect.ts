@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { TInput } from "./types/db";
+import { TInput } from "../types/db";
 
 export default ({ db }: TInput) => {
   const connect = () => {
