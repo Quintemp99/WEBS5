@@ -65,12 +65,20 @@ services:
       - PORT=${TARGET_SERVICE_PORT}
       - MONGO_URL=${TARGET_SERVICE_MONGO_URL}
       - API_SECRET=${API_SECRET}
+      - IMMAGA_API_KEY=${IMMAGA_API_KEY}
+      - IMMAGA_API_SECRET=${IMMAGA_API_SECRET}
+      - IMMAGA_API_URL=${IMMAGA_API_URL}
+      - IMMAGA_INDEX=${IMMAGA_INDEX}
+      - RABBIT_URL=${RABBIT_URL}
+      - RABBIT_EXCHANGE=${RABBIT_EXCHANGE}
     depends_on:
       rabbitmq-instance:
         condition: service_healthy
 
   mongo-db-instance:
     image: mongo:5.0.15
+    ports:
+      - 12345:27017
     volumes:
       - mongo-db-volume:/data/db
   

@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import Target, { ITarget } from "../models/target.model";
 import { TTarget } from "../types/target.type";
 import { Request, Response } from "express";
+import { publishTarget } from "../services/publicher.service";
 
 dotenv.config();
 
@@ -19,8 +20,7 @@ const TARGET_COLUMNS = [
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function createTarget(result: TTarget, data: any): Promise<ITarget> {
-  W;
-  const target = {
+  const target = <ITarget>{
     user: {
       _id: result.user._id,
       email: result.user.email,
@@ -35,7 +35,9 @@ async function createTarget(result: TTarget, data: any): Promise<ITarget> {
     },
   };
   //TODO: HIER HEB JE JE DIKKE TARGET NEEF
-  return await Target.create(target);
+  const newTarget = await Target.create(target);
+  await publishTarget(newTarget)
+  return newTarget
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

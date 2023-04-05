@@ -5,7 +5,7 @@ import routes from "./routes/routes";
 import connect from "./config/connect";
 import cors from "cors";
 import promBundle from "express-prom-bundle";
-import { enableConsumer } from "./services/consumer.service";
+import { enableAuthConsumer, enableTargetConsumer } from "./services/consumer.service";
 
 dotenv.config();
 
@@ -33,4 +33,5 @@ const db = process.env.MONGO_URL || '';
 
 connect({ db });
 routes({ app });
-enableConsumer();
+enableAuthConsumer();
+enableTargetConsumer();
