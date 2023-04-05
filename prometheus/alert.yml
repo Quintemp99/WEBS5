@@ -16,6 +16,6 @@ groups:
       - alert: "On db-exporter"
         expr: up{job="db-exporter"} < 1
         for: 30s
-      - alert: "On rabbitmq-instance"
-        expr: up{job="rabbitmq-instance"} < 1
+      - alert: "On rabbitmq-exporter"
+        expr: up{job="rabbitmq-exporter"} < 1
         for: 30s

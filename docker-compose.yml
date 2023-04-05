@@ -10,6 +10,15 @@ services:
       timeout: 5s
       retries: 5
 
+  rabbitmq-exporter:
+    image: kbudde/rabbitmq-exporter:v1.0.0-RC9
+    environment:
+      - RABBIT_URL=http://rabbitmq-instance:15672
+      - PUBLISH_PORT=3005
+    depends_on:
+      rabbitmq-instance:
+        condition: service_healthy
+
   api-gateway:
     container_name: api-gateway
     build: ./api-gateway
