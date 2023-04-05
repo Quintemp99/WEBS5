@@ -37,3 +37,7 @@ Authorization: Bearer {{TOKEN}}
 GET http://localhost:8080/target/{{TARGET_ID}}/image
 content-type: application/json
 Authorization: Bearer {{TOKEN}}
+
+### metrics rebbit
+GET http://localhost:15672/metrics
+content-type: application/json

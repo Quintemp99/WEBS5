@@ -1,0 +1,21 @@
+groups:
+  - name: WEBS5 Alerts
+    rules:
+      - alert: "On api-gateway"
+        expr: up{job="api-gateway"} < 1
+        for: 30s
+      - alert: "On auth-service"
+        expr: up{job="auth-service"} < 1
+        for: 30s
+      - alert: "On profile-service"
+        expr: up{job="profile-service"} < 1
+        for: 30s
+      - alert: "On target-service"
+        expr: up{job="target-service"} < 1
+        for: 30s
+      - alert: "On db-exporter"
+        expr: up{job="db-exporter"} < 1
+        for: 30s
+      - alert: "On rabbitmq-exporter"
+        expr: up{job="rabbitmq-exporter"} < 1
+        for: 30s
