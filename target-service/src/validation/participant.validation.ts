@@ -13,6 +13,7 @@ type ValidatePayload = z.infer<typeof participantSchema>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function validateParticipant(req: any) {
   const payload: ValidatePayload = {
+    user: req.user,
     targetId: req.params.id,
     image: req.files.image,
     long: req.body.long,
@@ -27,6 +28,7 @@ function validateParticipant(req: any) {
 }
 
 const participantSchema = z.object({
+  user: z.any(),
   targetId: z.string({
     required_error: "target id is required",
     invalid_type_error: "target id must be a string",

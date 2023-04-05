@@ -1,31 +1,16 @@
 import { Schema } from "mongoose";
 import { IImage, imageSchema } from "./image.model";
-
-interface IUser {
-  id: string;
-  name: string;
-}
-
-const userSchema = new Schema<IUser>({
-  id: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-});
+import { IUserProfile, userProfileSchema } from "./userProfile";
 
 export interface IParticipant {
   _id?: string;
-  user: IUser;
+  user: IUserProfile;
   image: IImage;
   score: number;
 }
 
 export const participantSchema = new Schema<IParticipant>({
-  user: userSchema,
+  user: userProfileSchema,
   image: imageSchema,
   score: {
     type: Number,

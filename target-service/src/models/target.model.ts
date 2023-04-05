@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IImage, imageSchema } from "./image.model";
 import { IParticipant, participantSchema } from "./participant.model";
+import { IUserProfile, userProfileSchema } from "./userProfile";
 
 const opts = { toJSON: { virtuals: true } };
 
@@ -10,6 +11,7 @@ interface ILocation {
 }
 
 export interface ITarget extends Document {
+  user: IUserProfile;
   image: IImage;
   location: ILocation;
   participant: IParticipant[];
@@ -33,6 +35,7 @@ const locationSchema = new Schema<ILocation>({
 
 const targetSchema = new Schema<ITarget>(
   {
+    user: userProfileSchema,
     image: imageSchema,
     location: locationSchema,
     participant: [participantSchema],

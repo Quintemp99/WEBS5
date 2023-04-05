@@ -19,9 +19,13 @@ async function createParticipant(
   const diff = Math.abs(now.getTime() - created_at.getTime());
   const diffHours = Math.ceil(diff / (1000 * 60 * 60));
 
+  if (diffHours > 24) {
+    throw new Error("Target is older than 24 hours, and can no longer be used");
+  }
+
   const user = {
-    id: "123",
-    name: "test",
+    _id: result.user._id,
+    email: result.user.email,
   };
 
   const image = {
@@ -46,6 +50,7 @@ async function createParticipant(
     { $push: { participant } },
     { new: true }
   );
+  //TODO: ben je dom ofzo? hier is de target met de participant erin
   return updatedTarget;
 }
 
@@ -63,7 +68,7 @@ async function getParticipantImage(req: Request, res: Response): Promise<void> {
   try {
     const target = await Target.findById(req.params.id);
     const participant = target?.participant.find(
-      (p) => p.user.id === req.params.userId
+      (p) => p.user._id === req.params.userId
     );
     const { image } = participant ?? {};
     if (image?.data) {

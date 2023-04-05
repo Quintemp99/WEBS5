@@ -1,4 +1,5 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmM3MDM4MjkyOWI1YmMwNDJiMDFmOSIsImVtYWlsIjoicS50ZW1wZWxhYXJzQGdtYWlsLmNvbSJ9LCJpYXQiOjE2ODA2MzM5MjUsImV4cCI6MTY4MDYzNzUyNX0.gIowEC3yhPB335XP5zTffzCDEkASPIsaKr86Bx2te3k
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmQ0Y2M4NWY5MTJjYTdhMWYzN2E2YyIsImVtYWlsIjoicS50ZW1wZWxhYXJzQGdtYWlsLmNvbSJ9LCJpYXQiOjE2ODA2OTAzODAsImV4cCI6MTY4MDY5Mzk4MH0.C_tvvIIybQgpkbgwFXkYSXIXSIy1aB4TUS6B3i7FxyY
+@TARGET_ID = 642d4e4d73d24aa3a9add96d
 ### Register call
 POST http://localhost:8080/auth/register
 content-type: application/json
@@ -29,5 +30,10 @@ Authorization: Bearer {{TOKEN}}
 
 ### Get all Targets
 GET http://localhost:8080/target/
+content-type: application/json
+Authorization: Bearer {{TOKEN}}
+
+### Get Target image
+GET http://localhost:8080/target/{{TARGET_ID}}/image
 content-type: application/json
 Authorization: Bearer {{TOKEN}}

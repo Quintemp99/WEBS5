@@ -1,4 +1,8 @@
 export type TTarget = {
+  user: {
+    _id: string;
+    email: string;
+  };
   image: {
     name: string;
     data: Buffer;

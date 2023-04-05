@@ -14,6 +14,7 @@ type ValidatePayload = z.infer<typeof targetSchema>;
 function validateTarget(req: any) {
   console.log(req.files.image);
   const payload: ValidatePayload = {
+    user: req.user,
     image: req.files.image,
     long: req.body.long,
     lat: req.body.lat,
@@ -27,6 +28,7 @@ function validateTarget(req: any) {
 }
 
 const targetSchema = z.object({
+  user: z.any(),
   image: z
     .any()
     .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
