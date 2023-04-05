@@ -37,7 +37,7 @@ export default ({ app }: TRoutesInput) => {
     })
 
     app.post('/register',passport.authenticate('register', { session: false }), async (req,res, next) =>{
-        res.json({
+        res.status(201).json({
             message: 'Signup successful',
             user: req.user
         });

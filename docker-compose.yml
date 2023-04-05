@@ -64,6 +64,24 @@ services:
     image: mongo:5.0.15
     volumes:
       - mongo-db-volume:/data/db
+  
+  db-exporter:
+    image: bitnami/mongodb-exporter:latest
+    environment:
+      - MONGODB_URI=mongodb://mongo-db-instance:27017
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    ports:
+      - 9090:9090
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+    depends_on:
+      rabbitmq-instance:
+        condition: service_healthy
 
 volumes:
   mongo-db-volume:
+  prometheus-data:
