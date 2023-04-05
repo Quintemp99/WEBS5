@@ -12,7 +12,6 @@ type ValidatePayload = z.infer<typeof targetSchema>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function validateTarget(req: any) {
-  console.log(req.files.image);
   const payload: ValidatePayload = {
     user: req.user,
     image: req.files.image,
@@ -49,7 +48,7 @@ const targetSchema = z.object({
       invalid_type_error: "lat must be a number",
     })
     .or(z.string().regex(/\d+/).transform(Number))
-    .refine((n) => n >= -90 && n <= 90, "long must be between -90 and 90"),
+    .refine((n) => n >= -90 && n <= 90, "lat must be between -90 and 90"),
 });
 
 export default {

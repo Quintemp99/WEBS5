@@ -19,7 +19,7 @@ const TARGET_COLUMNS = [
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function createTarget(result: TTarget, data: any): Promise<ITarget> {
-  console.log(result);
+  W;
   const target = {
     user: {
       _id: result.user._id,
