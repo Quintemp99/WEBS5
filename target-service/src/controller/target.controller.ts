@@ -7,6 +7,7 @@ dotenv.config();
 
 const TARGET_COLUMNS = [
   "_id",
+  "user",
   "location",
   "image.immagaId",
   "participant._id",
@@ -18,7 +19,12 @@ const TARGET_COLUMNS = [
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function createTarget(result: TTarget, data: any): Promise<ITarget> {
+  console.log(result);
   const target = {
+    user: {
+      _id: result.user._id,
+      email: result.user.email,
+    },
     image: {
       data: result.image.data,
       immagaId: data.result.upload_id,
@@ -28,6 +34,7 @@ async function createTarget(result: TTarget, data: any): Promise<ITarget> {
       lat: result.lat,
     },
   };
+  //TODO: HIER HEB JE JE DIKKE TARGET NEEF
   return await Target.create(target);
 }
 
@@ -83,7 +90,7 @@ async function getTarget(req: Request, res: Response): Promise<void> {
     if (req.query.userId) {
       const target = await Target.findById(req.params.id);
       const participant = target?.participant.find(
-        (p) => p.user.id === req.query.userId
+        (p) => p.user._id === req.query.userId
       );
       if (target && participant) {
         target.participant = [participant];
@@ -100,6 +107,13 @@ async function getTarget(req: Request, res: Response): Promise<void> {
         TARGET_COLUMNS
       );
       if (target.length > 0) {
+        res.send(target);
+      } else {
+        res.status(404).send("Target not found");
+      }
+    } else if (req.params.id) {
+      const target = await Target.findById(req.params.id, TARGET_COLUMNS);
+      if (target) {
         res.send(target);
       } else {
         res.status(404).send("Target not found");

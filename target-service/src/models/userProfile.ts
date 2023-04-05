@@ -1,19 +1,17 @@
-import mongoose, { Schema } from "mongoose";
+import { Schema } from "mongoose";
 
 export interface IUserProfile {
-  id: string;
-  name: string;
+  _id: string;
+  email: string;
 }
 
-const userSchema = new Schema<IUserProfile>({
-  id: {
+export const userProfileSchema = new Schema<IUserProfile>({
+  _id: {
     type: String,
     required: true,
   },
-  name: {
+  email: {
     type: String,
     required: true,
   },
 });
-
-export default mongoose.model<IUserProfile>("UserProfile", userSchema);

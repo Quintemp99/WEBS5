@@ -1,4 +1,8 @@
 export type TParticipant = {
+  user: {
+    _id: string;
+    email: string;
+  };
   targetId: string;
   image: {
     name: string;
