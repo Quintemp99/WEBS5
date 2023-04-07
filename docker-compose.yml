@@ -77,8 +77,6 @@ services:
 
   mongo-db-instance:
     image: mongo:5.0.15
-    ports:
-      - 12345:27017
     volumes:
       - mongo-db-volume:/data/db
   
@@ -92,12 +90,15 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus-data:/prometheus
-    ports:
-      - 9090:9090
     command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
     depends_on:
       rabbitmq-instance:
         condition: service_healthy
+  
+  grafana:
+    build: ./grafana
+    ports:
+      - 3000:3000
 
 volumes:
   mongo-db-volume:
