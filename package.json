@@ -3,7 +3,7 @@
     "lint": "eslint . --ext .ts,.vue",
     "lint-and-fix": "eslint . --ext .ts,.vue --fix",
     "pre-test": "(cd target-service && npm install) && (cd profile-service && npm install)",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register '**/src/test/**/*.ts'"
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit -r ts-node/register '**/src/test/**/*.ts'"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.57.0",
