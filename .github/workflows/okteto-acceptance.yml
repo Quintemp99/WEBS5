@@ -1,0 +1,42 @@
+name: 3 Okteto acceptence
+
+on:
+  pull_request:
+    branches:
+      - development
+      - master
+
+jobs:
+  devflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+
+      - name: "Deploy the preview environment"
+        uses: okteto/deploy-preview@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: dev-previews-y-dewert
+          variables: API_GATEWAY_PORT=3000,
+            AUTHSERVICE_URL=http://auth-service:3001/,
+            PROFILESERVICE_URL=http://profile-service:3002/,
+            TARGETSERVICE_URL=http://target-service:3003/,
+
+            AUTH_SERVICE_MONGO_URL=mongodb://mongo-db-instance:27017/auth-service,
+            AUTH_SERVICE_PORT=3001,
+
+            PROFILE_SERVICE_MONGO_URL=mongodb://mongo-db-instance:27017/profile-service,
+            PROFILE_SERVICE_PORT=3002,
+
+            TARGET_SERVICE_MONGO_URL=mongodb://mongo-db-instance:27017/target-service,
+            TARGET_SERVICE_PORT=3003,
+
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            API_SECRET=${{ secrets.API_SECRET }}
+
+            RABBIT_URL=amqp://rabbitmq-instance:5672,
+            RABBIT_EXCHANGE=WEBS5
+          timeout: 15m
