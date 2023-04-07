@@ -5,7 +5,7 @@ POST http://localhost:8080/auth/register
 content-type: application/json
 
 {
-    "email": "test3@gmail.com",
+    "email": "test4@gmail.com",
     "password": "password"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:8080/auth/login
 content-type: application/json
 
 {
-    "email": "test3@gmail.com",
+    "email": "test@gmail.com",
     "password": "password"
 }
 
