@@ -4,13 +4,14 @@ import profileModel from "../models/profile.model";
 const TARGET_COLUMNS = [
     "_id",
     "email",
+    "roles",
     "targets._id",
     "targets.user",
     "targets.image.immagaId",
-    "targets.participants._id",
-    "targets.participants.score",
-    "targets.participants.user",
-    "targets.participants.image.immagaId",
+    "targets.participant._id",
+    "targets.participant.score",
+    "targets.participant.user",
+    "targets.participant.image.immagaId",
   ];
 
 export const createProfile = async (profile: TProfile) : Promise<boolean> => {
@@ -36,7 +37,48 @@ export const addTargetToProfile = async (target: TTarget) =>{
             profile.targets = []
         }
         profile.targets.push(target)
-        console.log(profile)
         profile.save();
     }
+}
+
+export const addParticipantToTarget = async (upDatedTarget: TTarget) => {
+    const profile = await profileModel.findById(upDatedTarget.user._id)
+    if(profile){
+        profile.targets.forEach(target => {
+            if(target._id === upDatedTarget._id){
+                target.participant = upDatedTarget.participant
+            }
+        });
+        profile.save();
+    }
+}
+
+export const deleteTarget = async (target: TTarget) => {
+    await profileModel.findByIdAndUpdate(
+        target.user._id,
+        {
+            $pull: {
+              targets: { _id: target._id },
+            },
+        },
+        {new:true}
+    );
+    
+}
+
+export const deleteParticipant = async (targetAndParticipantId: {target: TTarget, participantId:string}) => {
+    await profileModel.findByIdAndUpdate(
+        targetAndParticipantId.target.user._id,
+        {
+            $pull:{
+                'targets.$[target].participant':{
+                    _id: targetAndParticipantId.participantId
+                }
+            }
+        },
+        {
+            arrayFilters:[{"target._id": targetAndParticipantId.target._id}],
+            new:true
+        }
+    )
 }

@@ -1,11 +1,11 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmQ3MzcyNTY2NjgzZDk3YWQ2ODMxYyIsImVtYWlsIjoicS50ZW1wZWxhYXJzQGdtYWlsLmNvbSJ9LCJpYXQiOjE2ODA3MDAyNzcsImV4cCI6MTY4MDcwMzg3N30.7HczIL1KEDcjPsLVSBZXZzm5zVN-EwQYV8oXRPBcXT4
-@TARGET_ID = 642d7466caabff668d1fa649
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmZmYThkZTQzYmNjMWYyNzY2NjdiZiIsImVtYWlsIjoidGVzdDNAZ21haWwuY29tIiwicm9sZXMiOlsiZ2VicnVpa2VyIl19LCJpYXQiOjE2ODA4NjcwODQsImV4cCI6MTY4MDg3MDY4NH0.ejFAok5lrKetsF2EfsBkuSUkK0Ai4nDhRTy1cJVLC-U
+@TARGET_ID = 642feb2fa31fd88bdc975cd7
 ### Register call
 POST http://localhost:8080/auth/register
 content-type: application/json
 
 {
-    "email": "q.tempelaars@gmail.com",
+    "email": "test3@gmail.com",
     "password": "password"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:8080/auth/login
 content-type: application/json
 
 {
-    "email": "q.tempelaars@gmail.com",
+    "email": "test3@gmail.com",
     "password": "password"
 }
 
@@ -40,5 +40,10 @@ Authorization: Bearer {{TOKEN}}
 
 ### Delete target
 DELETE http://localhost:8080/target/{{TARGET_ID}}
+content-type: application/json
+Authorization: Bearer {{TOKEN}}
+
+### Delete participant
+DELETE http://localhost:8080/target/{{TARGET_ID}}/642feb43a31fd88bdc975cdc
 content-type: application/json
 Authorization: Bearer {{TOKEN}}

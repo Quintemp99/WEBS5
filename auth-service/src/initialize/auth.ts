@@ -33,8 +33,8 @@ passport.use(
       },
       async (email:string, password:string, done:any) => {
         try {
-          const user = await userModel.create({ email, password });
-          await publishUser({_id: user._id.toString(), email: user.email});
+          const user = await userModel.create({ email:email, password:password, roles: ["gebruiker"] });
+          await publishUser({_id: user._id.toString(), email: user.email, roles: user.roles});
           return done(null, user);
         } catch (error) {
           done(error);

@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { TUser } from "../types/user.type";
 
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const UserSchema = new Schema<TUser>({
     email: {
       type: String,
       required: true,
@@ -12,10 +13,14 @@ const UserSchema = new Schema({
     password: {
       type: String,
       required: true
+    },
+    roles:{
+      type: [String],
+      required: true
     }
 },{
   methods:{
-    async isValidPassword(password:string){
+    async isValidPassword(password:string) : Promise<boolean>{
       const user = this;
       const compare = await bcrypt.compare(password, user.password);
   

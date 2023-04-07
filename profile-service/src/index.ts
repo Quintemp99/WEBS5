@@ -5,7 +5,7 @@ import routes from "./routes/routes";
 import connect from "./config/connect";
 import cors from "cors";
 import promBundle from "express-prom-bundle";
-import { enableAuthConsumer, enableTargetConsumer } from "./services/consumer.service";
+import { enableAuthConsumer, enableParticipantConsumer, enableParticipantDeleteConsumer, enableTargetConsumer, enableTargetDeleteConsumer } from "./services/consumer.service";
 
 dotenv.config();
 
@@ -35,3 +35,6 @@ connect({ db });
 routes({ app });
 enableAuthConsumer();
 enableTargetConsumer();
+enableParticipantConsumer();
+enableTargetDeleteConsumer();
+enableParticipantDeleteConsumer();

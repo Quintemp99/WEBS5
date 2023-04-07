@@ -1,6 +1,7 @@
 export type TProfile = {
     _id: string;
     email: string;
+    roles: string[];
     targets: TTarget[]
 }
 
@@ -9,13 +10,14 @@ export type TTarget = {
     user: TUser
     image: TImage;
     location: TLocation;
-    participants: TParticipant[];
+    participant: TParticipant[];
     created_at: Date;
 }
 
 export type TUser = {
     _id: string;
-    email: string
+    email: string;
+    roles: String[];
 }
 
 export type TImage = {

@@ -47,6 +47,10 @@ export const userSchema = new Schema<TUser>({
     type: String,
     required: true,
   },
+  roles:{
+    type: [String],
+    required: true,
+  }
 });
 
 
@@ -70,7 +74,7 @@ const targetSchema = new Schema<TTarget>({
     user: userSchema,
     image: imageSchema,
     location: locationSchema,
-    participants: [participantSchema],
+    participant: [participantSchema],
     created_at: {
       type: Date,
       default: Date.now,
@@ -86,6 +90,10 @@ const profileSchema = new Schema<TProfile>({
   email: {
     type: String,
     required: true,
+  },
+  roles:{
+    type: [String],
+    required: true
   },
   targets: [targetSchema]
 });

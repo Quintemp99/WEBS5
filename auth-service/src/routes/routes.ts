@@ -21,7 +21,7 @@ export default ({ app }: TRoutesInput) => {
                   async (error) => {
                     if (error) return next(error);
       
-                    const body = { _id: user._id, email: user.email };
+                    const body = { _id: user._id, email: user.email, roles: user.roles };
                     const token = jwt.sign({ user: body }, 
                       process.env.JWT_SECRET || "", 
                       { expiresIn: "1h"});

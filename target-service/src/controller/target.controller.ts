@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import Target, { ITarget } from "../models/target.model";
 import { TTarget } from "../types/target.type";
 import { Request, Response } from "express";
-import { publishTarget } from "../services/publicher.service";
+import { publishDeleteParticipant, publishDeleteTarget, publishTarget } from "../services/publicher.service";
 
 dotenv.config();
 
@@ -133,6 +133,7 @@ async function deleteTarget(req: Request, res: Response): Promise<void> {
   try {
     const target = await Target.findById(req.params.id);
     if (target) {
+      publishDeleteTarget(target);
       await Target.findByIdAndDelete(req.params.id);
       res.send("Target deleted");
     } else {
@@ -148,22 +149,26 @@ async function deleteParticipantFromTarget(
   req: Request,
   res: Response
 ): Promise<void> {
-  Target.updateOne(
-    { _id: req.params.id },
-    {
-      $pull: {
-        participant: { _id: req.params.participantId },
-      },
-    }
-  )
-    .then((result) => {
-      console.log(result);
-      res.send("Participant deleted");
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send("Internal server error");
-    });
+  const target = await Target.findById(req.params.id);
+  if(target){
+    Target.updateOne(
+      { _id: req.params.id },
+      {
+        $pull: {
+          participant: { _id: req.params.participantId },
+        },
+      }
+    )
+      .then((result) => {
+        publishDeleteParticipant(target, req.params.participantId)
+        console.log(result);
+        res.send("Participant deleted");
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("Internal server error");
+      });
+  }
 }
 
 export default {

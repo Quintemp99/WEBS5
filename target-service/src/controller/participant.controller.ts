@@ -3,6 +3,7 @@ import ImmagaApi from "../services/ImmagaApi.service";
 import Target from "../models/target.model";
 import { TParticipant } from "../types/participant.type";
 import { Request, Response } from "express";
+import { publishParticipant } from "../services/publicher.service";
 
 dotenv.config();
 
@@ -51,6 +52,9 @@ async function createParticipant(
     { new: true }
   );
   //TODO: ben je dom ofzo? hier is de target met de participant erin
+  if(updatedTarget){
+    publishParticipant(updatedTarget)
+  }
   return updatedTarget;
 }
 

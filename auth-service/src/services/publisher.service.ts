@@ -1,6 +1,6 @@
 import { rabbitChannel } from "../config/rabbitmq";
 
-export const publishUser = async (user: {_id:string, email:string}) =>{
+export const publishUser = async (user: {_id:string, email:string, roles:string[]}) =>{
     const channel = await rabbitChannel();
     if(!channel){
         return false
