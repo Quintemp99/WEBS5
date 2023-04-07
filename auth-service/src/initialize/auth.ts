@@ -53,8 +53,7 @@ passport.use(
       async (email:string, password:string, done:any) => {
         try {
           const user = await userModel.findOne({ email });
-  
-          if (!user) {
+          if (user === null) {
             return done(null, false, { message: 'User not found' });
           }
           

@@ -12,7 +12,7 @@ export default ({ app }: TRoutesInput) => {
             async (err:any, user:any, info:any) => {
               try {
                 if (err || !user) {
-                  return next(new Error('An error occurred.'));
+                  return next(`An error occurred: ${info.message}`);
                 }
       
                 req.login(
@@ -45,7 +45,8 @@ export default ({ app }: TRoutesInput) => {
 
     // Handle errors.
     app.use(function(err:any, req:any, res:any, next:any) {
+      console.log(`err: ${err}`)
         res.status(err.status || 500);
-        res.json({ error: err });
+        res.send({ err });
     });
 };
