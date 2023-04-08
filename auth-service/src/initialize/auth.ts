@@ -1,4 +1,5 @@
 import passport from 'passport';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const localStrategy = require('passport-local').Strategy
 import userModel from '../models/user.model';
 import passportJWT from "passport-jwt";
