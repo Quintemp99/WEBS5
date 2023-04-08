@@ -1,11 +1,11 @@
-@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MmZmYThkZTQzYmNjMWYyNzY2NjdiZiIsImVtYWlsIjoidGVzdDNAZ21haWwuY29tIiwicm9sZXMiOlsiZ2VicnVpa2VyIl19LCJpYXQiOjE2ODA4NjcwODQsImV4cCI6MTY4MDg3MDY4NH0.ejFAok5lrKetsF2EfsBkuSUkK0Ai4nDhRTy1cJVLC-U
+@TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0MzE4MjkwMzVlY2I5MjQ1NmY1NGM3YSIsImVtYWlsIjoicXVpbkBnbWFpbC5jb20iLCJyb2xlcyI6WyJnZWJydWlrZXIiXX0sImlhdCI6MTY4MDk2Njk5OCwiZXhwIjoxNjgwOTcwNTk4fQ.5BY1pZ_MgMMHmMLzQONSOYtmqKFb-3i4YIAOCFPHB9A
 @TARGET_ID = 642feb2fa31fd88bdc975cd7
 ### Register call
 POST http://localhost:8080/auth/register
 content-type: application/json
 
 {
-    "email": "test4@gmail.com",
+    "email": "quin@gmail.com",
     "password": "password"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:8080/auth/login
 content-type: application/json
 
 {
-    "email": "test@gmail.com",
+    "email": "quin@gmail.com",
     "password": "password"
 }
 

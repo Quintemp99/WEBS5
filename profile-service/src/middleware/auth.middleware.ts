@@ -2,6 +2,7 @@ import passport from "passport";
 import passportJWT from "passport-jwt";
 import { Request, Response } from "express";
 import { TUser } from "../types/profile.type";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ConnectRoles = require("connect-roles");
 
 passport.use(new passportJWT.Strategy({
