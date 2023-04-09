@@ -6,7 +6,7 @@ export type TProfile = {
 }
 
 export type TTarget = {
-    _id: String;
+    _id: string;
     user: TUser
     image: TImage;
     location: TLocation;
@@ -17,23 +17,23 @@ export type TTarget = {
 export type TUser = {
     _id: string;
     email: string;
-    roles: String[];
+    roles: string[];
 }
 
 export type TImage = {
-    _id: String;
+    _id: string;
     data: Buffer;
     immagaId: string;
 }
 
 export type TLocation = {
-    _id: String;
+    _id: string;
     long: number;
     lat: number
 }
 
 export type TParticipant = {
-    _id: String;
+    _id: string;
     user: TUser;
     email: string;
     image: TImage;
